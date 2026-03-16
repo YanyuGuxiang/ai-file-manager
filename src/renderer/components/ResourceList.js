@@ -34,7 +34,9 @@ const ResourceList = ({ resources, onResourceClick, categoryName }) => {
                 backgroundColor: 'white',
                 boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
                 cursor: 'pointer',
-                transition: 'box-shadow 0.2s'
+                transition: 'box-shadow 0.2s',
+                opacity: resource.isTranslating ? 0.6 : 1, // 翻译时降低透明度
+                position: 'relative'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.15)';
@@ -58,7 +60,14 @@ const ResourceList = ({ resources, onResourceClick, categoryName }) => {
                 }}
                 title={resource.description} // 鼠标悬停显示完整描述
               >
-                {truncateDescription(resource.description, 80)}
+                {resource.isTranslating ? (
+                  <span style={{ fontStyle: 'italic', color: '#888' }}>
+                    {truncateDescription(resource.originalDescription || resource.description, 80)}
+                    <span style={{ marginLeft: '5px', color: '#007acc' }}>正在翻译...</span>
+                  </span>
+                ) : (
+                  truncateDescription(resource.description, 80)
+                )}
               </div>
               <div
                 style={{

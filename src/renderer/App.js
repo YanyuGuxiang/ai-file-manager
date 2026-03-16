@@ -62,7 +62,8 @@ const App = () => {
         const query = searchQuery.toLowerCase();
         categoryResources = categoryResources.filter(resource =>
           resource.name.toLowerCase().includes(query) ||
-          resource.description.toLowerCase().includes(query) ||
+          resource.description.toLowerCase().includes(query) ||  // 翻译后的描述
+          (resource.originalDescription && resource.originalDescription.toLowerCase().includes(query)) || // 原始描述
           resource.path.toLowerCase().includes(query)
         );
       }

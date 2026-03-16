@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
+const { processDescription } = require('./translator'); // 导入翻译功能
 
 async function scanFiles(categories) {
   const results = {};
@@ -91,12 +92,17 @@ async function scanFolderCategory(searchPath, category) {
       console.log(`    未找到描述文件，使用文件夹名: ${folderName}`);
     }
 
+    // 对描述进行翻译处理
+    const translationResult = await processDescription(description);
+
     items.push({
       id: `${category.id}-${folderName}`,
       name: folderName,
-      description: description,
+      description: translationResult.translated,
+      originalDescription: translationResult.original, // 保留原始描述用于搜索
       path: folderPath,
-      type: 'folder'
+      type: 'folder',
+      isTranslating: translationResult.fromCache ? undefined : true // 标记是否正在翻译（除非是从缓存获取的）
     });
   }
 
@@ -144,12 +150,17 @@ async function scanFileCategory(searchPath) {
         }
       }
 
+      // 对描述进行翻译处理
+      const translationResult = await processDescription(description);
+
       items.push({
         id: `${path.basename(fullPath, '.md')}-${Date.now()}`,
         name: path.basename(fullPath, '.md'),
-        description: description,
+        description: translationResult.translated,
+        originalDescription: translationResult.original, // 保留原始描述用于搜索
         path: fullPath,
-        type: 'file'
+        type: 'file',
+        isTranslating: translationResult.fromCache ? undefined : true // 标记是否正在翻译（除非是从缓存获取的）
       });
     } catch (error) {
       console.error(`Error processing file ${fullPath}:`, error);
