@@ -1,0 +1,13 @@
+{
+  "categories": [
+    {
+      "id": "default",
+      "name": "默认类别",
+      "displayType": "folder",
+      "descriptionFile": "SKILL.md",
+      "searchPaths": [
+        "D:\\software\\Claude-model\\.claude\\skills"
+      ]
+    }
+  ]
+}

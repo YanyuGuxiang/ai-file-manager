@@ -1,3 +1,4 @@
+require('dotenv').config(); // 加载环境变量
 const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const path = require('path');
 const { scanFiles } = require('../renderer/utils/scanner');

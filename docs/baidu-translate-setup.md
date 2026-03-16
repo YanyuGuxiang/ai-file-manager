@@ -21,6 +21,15 @@ setx BAIDU_TRANSLATE_APPID "your_app_id"
 setx BAIDU_TRANSLATE_SECRET "your_secret_key"
 ```
 
+**推荐方式：创建 .env 文件**
+
+在项目根目录创建 `.env` 文件并添加以下内容：
+
+```env
+BAIDU_TRANSLATE_APPID=您真实的APP_ID
+BAIDU_TRANSLATE_SECRET=您真实的SECRET_KEY
+```
+
 ### 验证环境变量
 
 启动应用前，请确保已正确设置环境变量。可以通过以下方式验证：
@@ -28,6 +37,11 @@ setx BAIDU_TRANSLATE_SECRET "your_secret_key"
 ```cmd
 echo %BAIDU_TRANSLATE_APPID%
 echo %BAIDU_TRANSLATE_SECRET%
+```
+
+或者运行测试脚本：
+```cmd
+node test-baidu-translate.js
 ```
 
 ## 百度翻译API申请步骤
@@ -43,3 +57,11 @@ echo %BAIDU_TRANSLATE_SECRET%
 - API调用可能产生费用，请注意查看百度翻译API的收费标准
 - 确保网络连接正常，以便访问百度翻译API
 - 如果环境变量未设置，应用将保留原始文本而不进行翻译
+
+## 常见错误及解决方案
+
+如果遇到 `52003: UNAUTHORIZED USER` 错误，请检查：
+- APP ID和密钥是否正确
+- 百度翻译服务是否已开通
+- 账户是否已完成实名认证
+- IP白名单设置（如适用）
