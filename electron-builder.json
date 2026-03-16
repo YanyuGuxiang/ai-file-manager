@@ -1,0 +1,27 @@
+{
+  "appId": "com.ai-file-manager.app",
+  "productName": "AI文件管理器",
+  "directories": {
+    "output": "dist"
+  },
+  "win": {
+    "target": [
+      {
+        "target": "dir",
+        "arch": ["x64"]
+      }
+    ],
+    "icon": "build/icon.ico"
+  },
+  "files": [
+    "src/**/*",
+    "package.json",
+    "config.json"
+  ],
+  "extraResources": [
+    {
+      "from": "build/icon.png",
+      "to": "icon.png"
+    }
+  ]
+}

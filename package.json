@@ -1,0 +1,40 @@
+{
+  "name": "ai-file-manager",
+  "version": "1.0.0",
+  "description": "AI文件管理器 - 集中管理和整理AI相关配置文件",
+  "main": "src/main/index.js",
+  "scripts": {
+    "dev": "npm run build-renderer && electron .",
+    "start": "npm run build-renderer && electron .",
+    "build": "electron-builder --win dir",
+    "build-renderer": "webpack --config webpack.config.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ai",
+    "file-manager",
+    "electron",
+    "react"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@ant-design/icons": "^5.0.0",
+    "antd": "^5.0.0",
+    "axios": "^1.6.0",
+    "js-yaml": "^4.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.0",
+    "@babel/preset-env": "^7.22.0",
+    "@babel/preset-react": "^7.22.0",
+    "babel-loader": "^9.1.0",
+    "electron": "latest",
+    "electron-builder": "^24.6.0",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.0"
+  }
+}
