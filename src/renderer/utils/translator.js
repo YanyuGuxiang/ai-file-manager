@@ -35,7 +35,7 @@ async function translateText(text) {
     const sign = generateSign(baiduAppid, text, salt, baiduSecret);
 
     const params = new URLSearchParams({
-      q: encodeURIComponent(text),
+      q: text,  // 根据百度API要求，查询文本不需要URL编码
       from: 'auto',
       to: 'zh',
       appid: baiduAppid,
