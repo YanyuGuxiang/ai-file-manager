@@ -1,6 +1,5 @@
 const React = require('react');
 const { useState, useEffect } = React;
-const { ipcRenderer } = require('electron');
 
 const CategoryList = require('./components/CategoryList');
 const ResourceList = require('./components/ResourceList');
@@ -20,12 +19,12 @@ const App = () => {
   useEffect(() => {
     const loadInitialData = async () => {
       try {
-        const loadedConfig = await ipcRenderer.invoke('load-config');
+        const loadedConfig = await window.electronAPI.loadConfig();
         setConfig(loadedConfig);
 
         // 如果有类别，扫描资源
         if (loadedConfig.categories && loadedConfig.categories.length > 0) {
-          const scannedResources = await ipcRenderer.invoke('scan-files', loadedConfig.categories);
+          const scannedResources = await window.electronAPI.scanFiles(loadedConfig.categories);
           setResources(scannedResources);
 
           // 默认选择第一个类别
@@ -45,10 +44,11 @@ const App = () => {
       setConfig(newConfig);
     };
 
-    ipcRenderer.on('config-loaded', handleConfigLoaded);
+    window.electronAPI.onConfigLoaded(handleConfigLoaded);
 
     return () => {
-      ipcRenderer.removeListener('config-loaded', handleConfigLoaded);
+      // Note: We're not removing the listener as window.electronAPI.onConfigLoaded
+      // doesn't return a function to remove the listener
     };
   }, []);
 
@@ -75,8 +75,10 @@ const App = () => {
   }, [selectedCategory, resources, searchQuery]);
 
   const handleRefresh = async () => {
+    console.log('Refresh button clicked');
     try {
-      const updatedResources = await ipcRenderer.invoke('scan-files', config.categories);
+      const updatedResources = await window.electronAPI.scanFiles(config.categories);
+      console.log('Updated resources:', updatedResources);
       setResources(updatedResources);
     } catch (error) {
       console.error('Error refreshing resources:', error);
@@ -108,11 +110,11 @@ const App = () => {
       }
 
       const updatedConfig = { ...config, categories: updatedCategories };
-      await ipcRenderer.invoke('save-config', updatedConfig);
+      await window.electronAPI.saveConfig(updatedConfig);
       setConfig(updatedConfig);
 
       // 重新扫描资源
-      const updatedResources = await ipcRenderer.invoke('scan-files', updatedConfig.categories);
+      const updatedResources = await window.electronAPI.scanFiles(updatedConfig.categories);
       setResources(updatedResources);
 
       setIsDialogOpen(false);
@@ -126,7 +128,7 @@ const App = () => {
     try {
       const updatedCategories = config.categories.filter(cat => cat.id !== categoryId);
       const updatedConfig = { ...config, categories: updatedCategories };
-      await ipcRenderer.invoke('save-config', updatedConfig);
+      await window.electronAPI.saveConfig(updatedConfig);
       setConfig(updatedConfig);
 
       // 从资源中移除该类别的数据
@@ -148,7 +150,7 @@ const App = () => {
   };
 
   const handleResourceClick = (resource) => {
-    ipcRenderer.invoke('show-item-in-folder', resource.path);
+    window.electronAPI.showItemInFolder(resource.path);
   };
 
   return (

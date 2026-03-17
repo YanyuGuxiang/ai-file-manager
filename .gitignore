@@ -21,6 +21,7 @@ build/
 .env.test
 .env.local
 .env.production
+.env.e
 
 # Coverage directory used by tools like istanbul
 coverage/
@@ -72,3 +73,6 @@ out/
 # Build outputs
 webpack.config.js.user
 npm-shrinkwrap.json
+
+# Local config
+config.json

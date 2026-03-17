@@ -2,6 +2,20 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
+// 确定缓存文件位置的函数
+function getCachePath() {
+  // 在 renderer 进程中，使用 process.resourcesPath 来检测是否为打包环境
+  // 在打包环境中，process.resourcesPath 存在且包含应用资源
+  if (process.resourcesPath) {
+    // 打包环境中，缓存文件与可执行文件在同一目录
+    const exeDir = path.dirname(process.execPath);
+    return path.join(exeDir, 'translation-cache.json');
+  } else {
+    // 开发环境中，缓存文件在项目根目录
+    return path.join(__dirname, '..', '..', '..', 'translation-cache.json');
+  }
+}
+
 // 中文检测函数
 function detectLanguage(text) {
   // 检查是否包含中文字符
@@ -81,11 +95,15 @@ async function translateText(text) {
 
 // 加载翻译缓存
 function loadTranslationCache() {
-  const cachePath = path.join(__dirname, '..', '..', '..', 'translation-cache.json');
+  const cachePath = getCachePath();
+  console.log('尝试加载翻译缓存，路径:', cachePath); // 添加调试日志
   try {
     if (fs.existsSync(cachePath)) {
+      console.log('找到缓存文件，大小:', fs.statSync(cachePath).size, '字节'); // 添加调试日志
       const cacheData = fs.readFileSync(cachePath, 'utf8');
       return JSON.parse(cacheData);
+    } else {
+      console.log('缓存文件不存在:', cachePath); // 添加调试日志
     }
   } catch (error) {
     console.warn('加载翻译缓存失败:', error.message);
@@ -95,9 +113,17 @@ function loadTranslationCache() {
 
 // 保存翻译缓存
 function saveTranslationCache(cache) {
-  const cachePath = path.join(__dirname, '..', '..', '..', 'translation-cache.json');
+  const cachePath = getCachePath();
+  console.log('尝试保存翻译缓存，路径:', cachePath); // 添加调试日志
   try {
+    // 确保目录存在
+    const dir = path.dirname(cachePath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+
     fs.writeFileSync(cachePath, JSON.stringify(cache, null, 2));
+    console.log('翻译缓存已保存，大小:', JSON.stringify(cache).length, '字符'); // 添加调试日志
   } catch (error) {
     console.error('保存翻译缓存失败:', error.message);
   }

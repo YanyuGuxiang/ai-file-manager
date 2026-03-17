@@ -102,7 +102,7 @@ async function scanFolderCategory(searchPath, category) {
       originalDescription: translationResult.original, // 保留原始描述用于搜索
       path: folderPath,
       type: 'folder',
-      isTranslating: translationResult.fromCache ? undefined : true // 标记是否正在翻译（除非是从缓存获取的）
+      isTranslating: false // 翻译完成后始终设置为false，因为processDescription内部已处理异步翻译
     });
   }
 
@@ -160,7 +160,7 @@ async function scanFileCategory(searchPath) {
         originalDescription: translationResult.original, // 保留原始描述用于搜索
         path: fullPath,
         type: 'file',
-        isTranslating: translationResult.fromCache ? undefined : true // 标记是否正在翻译（除非是从缓存获取的）
+        isTranslating: false // 翻译完成后始终设置为false，因为processDescription内部已处理异步翻译
       });
     } catch (error) {
       console.error(`Error processing file ${fullPath}:`, error);

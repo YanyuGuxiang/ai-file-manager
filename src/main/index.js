@@ -17,8 +17,7 @@ function createWindow() {
     width: 1200,
     height: 800,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
+      contextIsolation: true,
       preload: path.join(__dirname, 'preload.js')
     },
     icon: path.join(__dirname, '../../build/icon.png') // 如果有图标的话

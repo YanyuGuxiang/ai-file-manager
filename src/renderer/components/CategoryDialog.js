@@ -10,6 +10,8 @@ const CategoryDialog = ({ category, onClose, onSave }) => {
     searchPaths: []
   });
 
+  const [isSaving, setIsSaving] = useState(false); // 添加保存状态
+
   const [newPath, setNewPath] = useState('');
 
   useEffect(() => {
@@ -57,7 +59,7 @@ const CategoryDialog = ({ category, onClose, onSave }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // 确保ID始终存在
@@ -66,7 +68,16 @@ const CategoryDialog = ({ category, onClose, onSave }) => {
       id: formData.id || Date.now().toString()
     };
 
-    onSave(finalData);
+    setIsSaving(true); // 设置保存状态
+
+    try {
+      await onSave(finalData); // 等待保存完成
+    } finally {
+      setIsSaving(false); // 重置保存状态
+    }
+
+    // 仅在保存成功后关闭对话框
+    onClose();
   };
 
   return (
@@ -88,7 +99,8 @@ const CategoryDialog = ({ category, onClose, onSave }) => {
         borderRadius: '8px',
         width: '500px',
         maxHeight: '80vh',
-        overflowY: 'auto'
+        overflowY: 'auto',
+        position: 'relative' // 为加载遮罩添加相对定位
       }}>
         <h2>{category ? '编辑类别' : '新建类别'}</h2>
 
@@ -105,6 +117,7 @@ const CategoryDialog = ({ category, onClose, onSave }) => {
                 border: '1px solid #ccc',
                 borderRadius: '4px'
               }}
+              disabled={isSaving} // 保存时禁用输入
               required
             />
           </div>
@@ -117,6 +130,7 @@ const CategoryDialog = ({ category, onClose, onSave }) => {
                   type="radio"
                   checked={formData.displayType === 'folder'}
                   onChange={() => handleChange('displayType', 'folder')}
+                  disabled={isSaving} // 保存时禁用输入
                 />
                 文件夹形式
               </label>
@@ -125,6 +139,7 @@ const CategoryDialog = ({ category, onClose, onSave }) => {
                   type="radio"
                   checked={formData.displayType === 'file'}
                   onChange={() => handleChange('displayType', 'file')}
+                  disabled={isSaving} // 保存时禁用输入
                 />
                 文件形式
               </label>
@@ -144,6 +159,7 @@ const CategoryDialog = ({ category, onClose, onSave }) => {
                   border: '1px solid #ccc',
                   borderRadius: '4px'
                 }}
+                disabled={isSaving} // 保存时禁用输入
               />
             </div>
           )}
@@ -163,10 +179,12 @@ const CategoryDialog = ({ category, onClose, onSave }) => {
                   border: '1px solid #ccc',
                   borderRadius: '4px 0 0 4px'
                 }}
+                disabled={isSaving} // 保存时禁用输入
               />
               <button
                 type="button"
                 onClick={handleAddPath}
+                disabled={isSaving} // 保存时禁用按钮
                 style={{
                   padding: '8px 15px',
                   border: '1px solid #ccc',
@@ -174,8 +192,8 @@ const CategoryDialog = ({ category, onClose, onSave }) => {
                   borderBottom: '1px solid #ccc',
                   borderLeft: 'none',
                   borderRadius: '0 4px 4px 0',
-                  backgroundColor: '#f0f0f0',
-                  cursor: 'pointer'
+                  backgroundColor: isSaving ? '#e0e0e0' : '#f0f0f0', // 保存时显示灰色
+                  cursor: isSaving ? 'not-allowed' : 'pointer'
                 }}
               >
                 添加路径
@@ -198,12 +216,13 @@ const CategoryDialog = ({ category, onClose, onSave }) => {
                   <button
                     type="button"
                     onClick={() => handleRemovePath(index)}
+                    disabled={isSaving} // 保存时禁用按钮
                     style={{
                       padding: '2px 8px',
                       border: '1px solid #ccc',
                       borderRadius: '4px',
-                      backgroundColor: '#ffebee',
-                      cursor: 'pointer'
+                      backgroundColor: isSaving ? '#e0e0e0' : '#ffebee', // 保存时显示灰色
+                      cursor: isSaving ? 'not-allowed' : 'pointer'
                     }}
                   >
                     删除
@@ -217,30 +236,68 @@ const CategoryDialog = ({ category, onClose, onSave }) => {
             <button
               type="button"
               onClick={onClose}
+              disabled={isSaving} // 保存时禁用按钮
               style={{
                 padding: '8px 16px',
                 border: '1px solid #ccc',
                 borderRadius: '4px',
-                cursor: 'pointer'
+                cursor: isSaving ? 'not-allowed' : 'pointer'
               }}
             >
               取消
             </button>
             <button
               type="submit"
+              disabled={isSaving} // 保存时禁用按钮
               style={{
                 padding: '8px 16px',
-                backgroundColor: '#1890ff',
+                backgroundColor: isSaving ? '#cccccc' : '#1890ff', // 保存时显示灰色
                 color: 'white',
                 border: 'none',
                 borderRadius: '4px',
-                cursor: 'pointer'
+                cursor: isSaving ? 'not-allowed' : 'pointer',
+                position: 'relative'
               }}
             >
-              保存
+              {isSaving ? '保存中...' : '保存'}
             </button>
           </div>
         </form>
+
+        {/* 保存时显示加载遮罩 */}
+        {isSaving && (
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 1001,
+            borderRadius: '8px'
+          }}>
+            <div style={{
+              textAlign: 'center',
+              padding: '20px'
+            }}>
+              <div style={{
+                fontSize: '16px',
+                marginBottom: '10px'
+              }}>
+                正在保存并处理资源...
+              </div>
+              <div style={{
+                fontSize: '14px',
+                color: '#666'
+              }}>
+                扫描并翻译资源可能需要一些时间
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
