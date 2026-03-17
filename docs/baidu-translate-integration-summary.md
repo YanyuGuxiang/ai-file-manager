@@ -17,8 +17,8 @@
 1. 申请百度翻译API密钥
 2. 在项目根目录创建 `.env` 文件：
    ```
-   BAIDU_TRANSLATE_APPID=your_app_id
-   BAIDU_TRANSLATE_SECRET=your_secret_key
+   BAIDU_TRANSLATE_APPID=your_app_id_here
+   BAIDU_TRANSLATE_SECRET=your_secret_key_here
    ```
 
 ## 已解决问题

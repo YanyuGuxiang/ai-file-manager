@@ -12,7 +12,7 @@
 
 #### 步骤2：检查应用状态
 1. 进入"管理控制台"
-2. 查找您的应用（APP ID: 20260312002571351）
+2. 查找您的应用（APP ID: YOUR_ACTUAL_APP_ID）
 3. 确认应用状态是否为"已启用"
 4. 检查应用的"通用翻译API"服务是否已开通
 
@@ -43,8 +43,8 @@
 
 2. 确保 .env 文件格式正确：
    ```
-   BAIDU_TRANSLATE_APPID=20260312002571351
-   BAIDU_TRANSLATE_SECRET=b3NBCUI6hDdgFhV68A6i
+   BAIDU_TRANSLATE_APPID=your_actual_app_id_here
+   BAIDU_TRANSLATE_SECRET=your_actual_secret_key_here
    ```
 
 ### 4. 临时测试验证
@@ -52,7 +52,7 @@
 如果仍然遇到问题，您可以尝试使用在线MD5计算器手动验证签名：
 
 1. 拼接字符串（以"test"为查询词为例）：
-   `20260312002571351test123456b3NBCUI6hDdgFhV68A6i`
+   `your_app_id_heretest123456your_secret_key_here`
 
 2. 使用在线MD5工具生成哈希值
 3. 确认生成的值是否与我们在调试脚本中得到的一致
@@ -60,13 +60,13 @@
 ### 5. 技术细节验证
 
 根据我们的调试，拼接字符串为：
-`20260312002571351test123456b3NBCUI6hDdgFhV68A6i`
+`your_app_id_heretest123456your_secret_key_here`
 
 MD5哈希前的十六进制表示为：
-`32303236303331323030323537313335317465737431323334353662334e4243554936684464674668563638413669`
+`796f75725f6170705f69645f6865726574657374313233343536796f75725f7365637265745f6b65795f68657265`
 
 生成的MD5签名应该是：
-`2adba5c631431b0552ad425802ff163a`
+`e1a7ac80cf3aef756e1b00e27e50bab8`
 
 如果您在百度开发者文档中看到不同的示例，请核对是否使用相同的格式。
 

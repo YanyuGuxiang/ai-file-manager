@@ -11,14 +11,14 @@
 
 通过命令行设置（临时）：
 ```cmd
-set BAIDU_TRANSLATE_APPID=your_app_id
-set BAIDU_TRANSLATE_SECRET=your_secret_key
+set BAIDU_TRANSLATE_APPID=your_actual_app_id_here
+set BAIDU_TRANSLATE_SECRET=your_actual_secret_key_here
 ```
 
 通过命令行设置（永久）：
 ```cmd
-setx BAIDU_TRANSLATE_APPID "your_app_id"
-setx BAIDU_TRANSLATE_SECRET "your_secret_key"
+setx BAIDU_TRANSLATE_APPID "your_actual_app_id_here"
+setx BAIDU_TRANSLATE_SECRET "your_actual_secret_key_here"
 ```
 
 **推荐方式：创建 .env 文件**
@@ -26,8 +26,8 @@ setx BAIDU_TRANSLATE_SECRET "your_secret_key"
 在项目根目录创建 `.env` 文件并添加以下内容：
 
 ```env
-BAIDU_TRANSLATE_APPID=您真实的APP_ID
-BAIDU_TRANSLATE_SECRET=您真实的SECRET_KEY
+BAIDU_TRANSLATE_APPID=your_actual_app_id_here
+BAIDU_TRANSLATE_SECRET=your_actual_secret_key_here
 ```
 
 ### 验证环境变量

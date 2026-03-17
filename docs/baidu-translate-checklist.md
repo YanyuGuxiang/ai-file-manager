@@ -11,8 +11,8 @@ type .env
 
 您应该看到类似这样的内容：
 ```
-BAIDU_TRANSLATE_APPID=您真实的APP_ID
-BAIDU_TRANSLATE_SECRET=您真实的SECRET_KEY
+BAIDU_TRANSLATE_APPID=your_actual_app_id_here
+BAIDU_TRANSLATE_SECRET=your_actual_secret_key_here
 ```
 
 ## 2. 验证API凭据
@@ -42,8 +42,8 @@ node test-baidu-translate.js
 将正确的APP ID和密钥更新到 .env 文件中：
 
 ```env
-BAIDU_TRANSLATE_APPID=真实的应用ID
-BAIDU_TRANSLATE_SECRET=真实的密钥
+BAIDU_TRANSLATE_APPID=your_real_app_id_here
+BAIDU_TRANSLATE_SECRET=your_real_secret_key_here
 ```
 
 ### 步骤5: 重启应用
