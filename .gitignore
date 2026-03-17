@@ -76,3 +76,6 @@ npm-shrinkwrap.json
 
 # Local config
 config.json
+
+# Cache files
+translation-cache.json
